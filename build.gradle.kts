@@ -1,5 +1,6 @@
 plugins {
 	java
+	`maven-publish`
 }
 
 group = "icu.7c7.mcdev"
@@ -19,3 +20,24 @@ tasks.withType(JavaCompile::class).configureEach {
 	if (JavaVersion.current().isJava9Compatible())
 		options.release.set(targetVersion)
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            // artifact(javadocJar.get())
+            // artifact(tasks.named("sourcesJar"))
+            pom {
+                name.set("lowcode-universal")
+                url.set("https://github.com/teddyxlandlee/lowcode-universal")
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "localRepository"
+            url = uri(layout.buildDirectory.dir("maven-repo"))
+        }
+    }
+}
+
